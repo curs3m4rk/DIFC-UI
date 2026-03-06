@@ -32,7 +32,7 @@ export default function Sidebar({ drawerWidth, mobileOpen, onClose }: Props) {
     <Box>
       <Toolbar>
         <Typography variant="h6" fontWeight="bold" color="primary">
-          Progress Monitor
+          DIFC
         </Typography>
       </Toolbar>
 

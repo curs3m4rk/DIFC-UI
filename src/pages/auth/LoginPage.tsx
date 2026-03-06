@@ -42,16 +42,20 @@ export default function LoginPage() {
 
   return (
     <Box
-      display="flex"
-      justifyContent="center"
-      alignItems="center"
-      minHeight="100vh"
-      sx={{ backgroundColor: 'background.default' }}
+      sx={{
+        position: 'fixed',
+        top: 0, left: 0,
+        width: '100%', height: '100%',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: 'background.default',
+      }}
     >
-      <Paper elevation={3} sx={{ p: 4, width: 420, borderRadius: 2 }}>
+      <Paper elevation={3} sx={{ p: 4, width: '100%', maxWidth: 420, mx: 2, borderRadius: 2 }}>
 
         <Typography variant="h5" fontWeight="bold" mb={0.5}>
-          Progress Monitor
+          DIFC
         </Typography>
         <Typography variant="body2" color="text.secondary" mb={3}>
           Sign in to your account

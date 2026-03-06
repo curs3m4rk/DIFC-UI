@@ -19,9 +19,9 @@ export const useAuth = () => {
     // Server returns accessToken in JSON body
     // Server sets refreshToken as HttpOnly cookie automatically
     const response = await api.post('/auth/login', credentials);
-    const { accessToken, userId, email, fullName, roles } = response.data;
+    const { accessToken, userId, email, userName, roles } = response.data;
 
-    setAuth(accessToken, { userId, email, fullName, roles });
+    setAuth(accessToken, { userId, email, userName, roles });
 
     return response.data;
   };

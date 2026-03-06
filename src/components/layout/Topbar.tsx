@@ -28,7 +28,7 @@ export default function Topbar({ drawerWidth, onMenuClick }: Props) {
   };
 
   // "John Doe" → "JD"
-  const initials = user?.fullName
+  const initials = user?.userName
     .split(' ')
     .map(n => n[0])
     .join('')
@@ -59,7 +59,7 @@ export default function Topbar({ drawerWidth, onMenuClick }: Props) {
         {/* User section */}
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
           <Typography variant="body2" sx={{ display: { xs: 'none', sm: 'block' } }}>
-            {user?.fullName}
+            {user?.userName}
           </Typography>
 
           <Tooltip title="Account settings">

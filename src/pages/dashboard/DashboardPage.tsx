@@ -8,7 +8,7 @@ export default function DashboardPage() {
     <Box>
       <Typography variant="h4" mb={0.5}>Dashboard</Typography>
       <Typography variant="body2" color="text.secondary" mb={3}>
-        Welcome back, {user?.fullName}
+        Welcome back, {user?.userName}
       </Typography>
 
       <Grid container spacing={3}>

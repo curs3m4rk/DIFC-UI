@@ -1,4 +1,5 @@
-import { Box, Typography, Paper, Grid } from '@mui/material';
+import { Box, Typography, Paper } from '@mui/material';
+import Grid from '@mui/material/Grid2';
 import { useAuthStore } from '@/store/authStore';
 
 export default function DashboardPage() {
@@ -18,7 +19,7 @@ export default function DashboardPage() {
           { label: 'Completed',      value: 0 },
           { label: 'Overdue',        value: 0 },
         ].map(({ label, value }) => (
-          <Grid item xs={12} sm={6} md={3} key={label}>
+          <Grid size={{ xs: 12, sm: 6, md: 3 }} key={label}>
             <Paper sx={{ p: 3, textAlign: 'center', borderRadius: 2 }}>
               <Typography variant="h3" fontWeight="bold" color="primary">
                 {value}

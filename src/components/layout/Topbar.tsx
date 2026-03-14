@@ -6,9 +6,12 @@ import {
 import MenuIcon from '@mui/icons-material/Menu';
 import LogoutIcon from '@mui/icons-material/Logout';
 import PersonIcon from '@mui/icons-material/Person';
+import Brightness4Icon from '@mui/icons-material/Brightness4';
+import Brightness7Icon from '@mui/icons-material/Brightness7';
 import { useAuthStore } from '@/store/authStore';
 import { useAuth } from '@/hooks/useAuth';
 import { useNavigate } from 'react-router-dom';
+import { useThemeMode } from '@/theme/themeMode';
 
 interface Props {
   drawerWidth: number;
@@ -19,6 +22,7 @@ export default function Topbar({ drawerWidth, onMenuClick }: Props) {
   const { user } = useAuthStore();
   const { logout } = useAuth();
   const navigate = useNavigate();
+  const { mode, toggleMode } = useThemeMode();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
   const handleLogout = async () => {
@@ -37,10 +41,14 @@ export default function Topbar({ drawerWidth, onMenuClick }: Props) {
   return (
     <AppBar
       position="fixed"
-      elevation={1}
+      elevation={0}
+      color="default"
       sx={{
+        bgcolor: 'background.paper',
+        color: 'text.primary',
         width: { sm: `calc(100% - ${drawerWidth}px)` },
         ml: { sm: `${drawerWidth}px` },
+        borderBottom: (theme) => `1px solid ${theme.palette.divider}`,
       }}
     >
       <Toolbar>
@@ -56,8 +64,13 @@ export default function Topbar({ drawerWidth, onMenuClick }: Props) {
 
         <Typography variant="h6" noWrap sx={{ flexGrow: 1 }} />
 
-        {/* User section */}
+        {/* Theme toggle + user section */}
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+          <Tooltip title={mode === 'dark' ? 'Switch to light' : 'Switch to dark'}>
+            <IconButton color="inherit" onClick={toggleMode} sx={{ p: 0.5 }}>
+              {mode === 'dark' ? <Brightness7Icon /> : <Brightness4Icon />}
+            </IconButton>
+          </Tooltip>
           <Typography variant="body2" sx={{ display: { xs: 'none', sm: 'block' } }}>
             {user?.userName}
           </Typography>

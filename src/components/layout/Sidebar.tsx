@@ -74,7 +74,11 @@ export default function Sidebar({ drawerWidth, mobileOpen, onClose }: Props) {
         ModalProps={{ keepMounted: true }} // better mobile performance
         sx={{
           display: { xs: 'block', sm: 'none' },
-          '& .MuiDrawer-paper': { width: drawerWidth },
+          '& .MuiDrawer-paper': {
+            width: drawerWidth,
+            bgcolor: 'background.paper',
+            color: 'text.primary',
+          },
         }}
       >
         {content}
@@ -85,7 +89,13 @@ export default function Sidebar({ drawerWidth, mobileOpen, onClose }: Props) {
         variant="permanent"
         sx={{
           display: { xs: 'none', sm: 'block' },
-          '& .MuiDrawer-paper': { width: drawerWidth, boxSizing: 'border-box' },
+          '& .MuiDrawer-paper': {
+            width: drawerWidth,
+            boxSizing: 'border-box',
+            bgcolor: 'background.paper',
+            color: 'text.primary',
+            borderRight: (theme) => `1px solid ${theme.palette.divider}`,
+          },
         }}
         open
       >

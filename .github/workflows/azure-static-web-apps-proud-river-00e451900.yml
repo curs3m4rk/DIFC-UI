@@ -46,6 +46,11 @@ jobs:
           app_build_command: "npm ci && npm run build"
           github_id_token: ${{ steps.idtoken.outputs.result }}
           ###### End of Repository/Build Configurations ######
+      - name: List dist output (debug)
+        if: always()
+        run: |
+          echo "Listing dist output:"
+          ls -la dist
 
   close_pull_request_job:
     if: github.event_name == 'pull_request' && github.event.action == 'closed'

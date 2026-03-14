@@ -1,5 +1,5 @@
 import { Box, Typography, Paper } from '@mui/material';
-import Grid from '@mui/material/Grid2';
+import Grid from '@mui/material/Grid';
 import { useAuthStore } from '@/store/authStore';
 
 export default function DashboardPage() {

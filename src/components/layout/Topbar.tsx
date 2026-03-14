@@ -30,7 +30,7 @@ export default function Topbar({ drawerWidth, onMenuClick }: Props) {
   // "John Doe" → "JD"
   const initials = user?.userName
     .split(' ')
-    .map(n => n[0])
+    .map((n: string) => n[0])
     .join('')
     .toUpperCase() ?? '?';
 

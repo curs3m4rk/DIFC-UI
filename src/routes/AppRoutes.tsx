@@ -2,6 +2,7 @@ import { Routes, Route, Navigate } from 'react-router-dom';
 import ProtectedRoute from './ProtectedRoute';
 import AppLayout from '@/components/layout/AppLayout';
 import LoginPage from '@/pages/auth/LoginPage';
+import SignupPage from '@/pages/auth/SignupPage';
 import DashboardPage from '@/pages/dashboard/DashboardPage';
 import NotFoundPage from '@/pages/errors/NotFoundPage';
 import UnauthorizedPage from '@/pages/errors/UnauthorizedPage';
@@ -26,6 +27,7 @@ export default function AppRoutes() {
     <Routes>
       {/* ── Public routes ──────────────────────────────── */}
       <Route path="/login"        element={<LoginPage />} />
+      <Route path="/signup"       element={<SignupPage />} />
       <Route path="/unauthorized" element={<UnauthorizedPage />} />
 
       {/* ── Protected routes (requires login) ──────────── */}

@@ -10,8 +10,10 @@ import { useAuthStore } from '@/store/authStore';
  * - Request interceptor → auto-injects Bearer token
  * - Response interceptor → silently refreshes expired token and retries
  */
+const baseURL = import.meta.env.VITE_API_BASE_URL ?? 'https://localhost:7055/api';
+
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_BASE_URL ?? 'https://localhost:7055/api',
+  baseURL,
   withCredentials: true, // REQUIRED: sends the HttpOnly refreshToken cookie
 });
 
@@ -77,7 +79,7 @@ api.interceptors.response.use(
 
         // Call refresh — cookie sent automatically (withCredentials)
         const res = await axios.post(
-          `${import.meta.env.VITE_API_BASE_URL ?? 'https://localhost:7000/api'}/auth/refresh`,
+          `${baseURL}/auth/refresh`,
           { accessToken: currentToken },
           { withCredentials: true }
         );

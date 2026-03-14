@@ -24,7 +24,6 @@ dist-ssr
 *.sw?
 
 .env.development
-.env.production
 build/
 coverage/
 /.vs

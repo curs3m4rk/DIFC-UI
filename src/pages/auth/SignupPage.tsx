@@ -18,35 +18,64 @@ import {
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
-import { useAuth } from '@/hooks/useAuth';
+import api from '@/api/axiosInstance';
 
-export default function LoginPage() {
-  const { login } = useAuth();
+interface RegisterPayload {
+  userName: string;
+  email: string;
+  password: string;
+  confirmPassword: string;
+}
+
+export default function SignupPage() {
   const navigate = useNavigate();
 
+  const [userName, setUserName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
+  const [showConfirm, setShowConfirm] = useState(false);
   const [error, setError] = useState('');
+  const [errorList, setErrorList] = useState<string[]>([]);
+  const [success, setSuccess] = useState('');
   const [loading, setLoading] = useState(false);
 
-  const handleLogin = async () => {
-    if (!email || !password) {
-      setError('Please enter your email and password.');
+  const handleRegister = async () => {
+    if (!userName || !email || !password || !confirmPassword) {
+      setError('Please fill in all fields.');
+      return;
+    }
+
+    if (password !== confirmPassword) {
+      setError('Password and confirm password must match.');
       return;
     }
 
     setError('');
+    setErrorList([]);
+    setSuccess('');
     setLoading(true);
 
     try {
-      await login({ email, password });
-      navigate('/dashboard');
+      const payload: RegisterPayload = { userName, email, password, confirmPassword };
+      const response = await api.post('/User/register', payload);
+      const message = response.data?.message ?? 'Registration successful.';
+      setSuccess(message);
+      setTimeout(() => navigate('/login'), 800);
     } catch (err: any) {
-      // Surfaces your .NET API messages directly:
-      // "Invalid email or password."
-      // "Account is temporarily locked..."
-      setError(err.response?.data?.message ?? 'Login failed. Please try again.');
+      const apiMessage = err.response?.data?.message;
+      const errors = err.response?.data?.errors;
+
+      if (Array.isArray(errors) && errors.length > 0) {
+        setErrorList(errors);
+      } else if (errors && typeof errors === 'object') {
+        const firstKey = Object.keys(errors)[0];
+        const firstError = errors[firstKey]?.[0];
+        setError(firstError ?? 'Registration failed.');
+      } else {
+        setError(apiMessage ?? 'Registration failed. Please try again.');
+      }
     } finally {
       setLoading(false);
     }
@@ -54,7 +83,7 @@ export default function LoginPage() {
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    await handleLogin();
+    await handleRegister();
   };
 
   return (
@@ -66,12 +95,20 @@ export default function LoginPage() {
               <LockOutlinedIcon />
             </Avatar>
             <Typography component="h1" variant="h5" fontWeight={700}>
-              Sign in
+              Sign up
             </Typography>
             <Typography variant="body2" color="text.secondary" mt={0.5} mb={2}>
-              Sign in to your account
+              Create your DIFC account
             </Typography>
           </Box>
+
+          {errorList.length > 0 && (
+            <Alert severity="error" sx={{ mb: 2 }}>
+              {errorList.map((msg, index) => (
+                <Box key={`${index}-${msg}`}>{msg}</Box>
+              ))}
+            </Alert>
+          )}
 
           {error && (
             <Alert severity="error" sx={{ mb: 2 }}>
@@ -79,7 +116,24 @@ export default function LoginPage() {
             </Alert>
           )}
 
+          {success && (
+            <Alert severity="success" sx={{ mb: 2 }}>
+              {success}
+            </Alert>
+          )}
+
           <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              label="Username"
+              autoComplete="username"
+              value={userName}
+              onChange={(e) => setUserName(e.target.value)}
+              disabled={loading}
+            />
+
             <TextField
               margin="normal"
               required
@@ -98,7 +152,7 @@ export default function LoginPage() {
               fullWidth
               label="Password"
               type={showPassword ? 'text' : 'password'}
-              autoComplete="current-password"
+              autoComplete="new-password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               disabled={loading}
@@ -113,6 +167,27 @@ export default function LoginPage() {
               }}
             />
 
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              label="Confirm Password"
+              type={showConfirm ? 'text' : 'password'}
+              autoComplete="new-password"
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              disabled={loading}
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton onClick={() => setShowConfirm((p) => !p)} edge="end">
+                      {showConfirm ? <VisibilityOffIcon /> : <VisibilityIcon />}
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              }}
+            />
+
             <Button
               type="submit"
               fullWidth
@@ -121,15 +196,12 @@ export default function LoginPage() {
               disabled={loading}
               sx={{ mt: 1.5, mb: 2 }}
             >
-              {loading ? <CircularProgress size={24} color="inherit" /> : 'Sign In'}
+              {loading ? <CircularProgress size={24} color="inherit" /> : 'Create Account'}
             </Button>
 
             <Stack direction="row" justifyContent="space-between" flexWrap="wrap" spacing={1}>
-              <Link href="#" variant="body2" onClick={(e) => e.preventDefault()}>
-                Forgot password?
-              </Link>
-              <Link href="/signup" variant="body2">
-                {"Don't have an account? Sign Up"}
+              <Link href="/login" variant="body2">
+                Already have an account? Sign in
               </Link>
             </Stack>
           </Box>
